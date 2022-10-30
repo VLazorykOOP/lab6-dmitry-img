@@ -1,58 +1,80 @@
-﻿// See https://aka.ms/new-console-template for more information
-/// <summary>
-///  Top-level statements 
-///  Код програми (оператори)  вищого рівня
-/// </summary>
-///
-Console.WriteLine("Lab6 C# ");
-AnyFunc();
-
-/// <summary>
-/// 
-///  Top-level statements must precede namespace and type declarations.
-/// At the top-level methods/functions can be defined and used
-/// На верхньому рівні можна визначати та використовувати методи/функції
-/// </summary>
-void AnyFunc()
+﻿using Lab5CSharp.Task1;
+using Lab5CSharp.Task3;
+class Program
 {
-    Console.WriteLine(" Some function in top-level");
-}
-Console.WriteLine("Problems 1 ");
-AnyFunc();
-//  приклад класів
-UserClass cl = new UserClass();
-cl.Name = " UserClass top-level ";
-User.UserClass cl2 = new();
-cl2.Name = " UserClass namespace User ";
 
-
-
-
-/// <summary>
-/// 
-/// Top-level statements must precede namespace and type declarations.
-/// Оператори верхнього рівня мають передувати оголошенням простору імен і типу.
-/// Створення класу(ів) або оголошенням простору імен є закіченням  іструкцій верхнього рівня
-/// 
-/// </summary>
-
-namespace User
-{
-    class UserClass
+    public static void Task1AndTask2() 
     {
-        public string Name { get; set; }
-        public UserClass()
+        List<Transport> transports = new List<Transport>()
         {
-            Name = "NoName";
-        }
-        UserClass(string n)
+            new Car(4, 200, 5),
+            new Train(10, 100, 100),
+            new ExpressTrain(100, 10, 200, 100)
+        };
+        transports.ForEach(x => x.Show());
+        
+        ExpressTrain express = new ExpressTrain(100, 10, 200, 100);
+        ExpressTrain anotherExpress = null;
+        anotherExpress = (ExpressTrain)express.Clone();
+        Console.WriteLine("Express foreach");
+        foreach (var item in anotherExpress)
         {
-            Name = n;
+            Console.WriteLine(item);
         }
     }
 
-}
-class UserClass
-{
-    public string Name { get; set; }
+    public static void Task3()
+    {
+        List<IFigure> figures = new List<IFigure>();
+        Console.WriteLine("How many figures do you want to create?");
+        int count = int.Parse(Console.ReadLine());
+        while (count > 0)
+        {
+            Console.WriteLine("What kind of figure do you want to create? (1 - Circle, 2 - Rectangle, 3 - Triangle)");
+            int figureType = int.Parse(Console.ReadLine());
+            switch (figureType)
+            {
+                case 1:
+                    Console.WriteLine("Enter radius");
+                    double radius = double.Parse(Console.ReadLine());
+                    figures.Add(new Circle(radius));
+                    break;
+                case 2:
+                    Console.WriteLine("Enter width");
+                    double width = double.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter height");
+                    double height = double.Parse(Console.ReadLine());
+                    figures.Add(new Rectangle(width, height));
+                    break;
+                case 3:
+                    Console.WriteLine("Enter side A");
+                    double sideA = double.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter side B");
+                    double sideB = double.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter side C");
+                    double sideC = double.Parse(Console.ReadLine());
+                    figures.Add(new Triangle(sideA, sideB, sideC));
+                    break;
+                default:
+                    Console.WriteLine("Wrong figure type");
+                    break;
+            }
+            count--;
+        }
+        foreach (var figure in figures)
+        {
+            figure.Print();
+        }
+
+    }
+   
+        
+    static void Main(string[] args)
+    {
+        Task1AndTask2();
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+        Task3();
+    }
+    
 }
